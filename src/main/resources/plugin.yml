@@ -1,0 +1,6 @@
+name: CraftLogger
+version: 1.0.0
+description: Log everything
+author: MrWakeCZ
+main: cz.craftmania.logger.Main
+depend: [LuckPerms]
