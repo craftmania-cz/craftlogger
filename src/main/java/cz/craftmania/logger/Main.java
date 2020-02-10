@@ -1,6 +1,7 @@
 package cz.craftmania.logger;
 
 import cz.craftmania.logger.listeners.LuckPermsListener;
+import cz.craftmania.logger.sql.SQLManager;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -11,7 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
-    LuckPerms luckPermsApi;
+    private boolean debugEnabled = true;
+    private LuckPerms luckPermsApi;
+    private SQLManager sql;
 
     @Override
     public void onEnable() {
@@ -19,10 +22,18 @@ public class Main extends JavaPlugin implements Listener {
         // Instance
         instance = this;
 
+        //Config
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+
+        // LuckPerms register
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
             luckPermsApi = provider.getProvider();
         }
+
+        // HikariCP
+        sql = new SQLManager(this);
 
         PluginManager pluginManager = this.getServer().getPluginManager();
         pluginManager.registerEvents(new LuckPermsListener(), this);
@@ -30,6 +41,10 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+
+        // Deaktivace MySQL
+        sql.onDisable();
+
         instance = null;
     }
 
@@ -39,5 +54,13 @@ public class Main extends JavaPlugin implements Listener {
 
     public LuckPerms getLuckPermsApi() {
         return luckPermsApi;
+    }
+
+    public boolean isDebugEnabled() {
+        return debugEnabled;
+    }
+
+    public SQLManager getSQL() {
+        return sql;
     }
 }
