@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
-    private boolean debugEnabled = true;
+    private boolean debugEnabled = false;
     private LuckPerms luckPermsApi;
     private SQLManager sql;
 
@@ -25,6 +25,8 @@ public class Main extends JavaPlugin implements Listener {
         //Config
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
+
+        debugEnabled = getConfig().getBoolean("debug", false);
 
         // LuckPerms register
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);

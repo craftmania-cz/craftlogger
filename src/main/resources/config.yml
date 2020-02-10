@@ -11,3 +11,6 @@ settings:
   minimumConnections: 2
   maximumConnections: 5
   timeout: 30000
+
+# Při povolení se budou psát logy do konzole!
+debug: false
