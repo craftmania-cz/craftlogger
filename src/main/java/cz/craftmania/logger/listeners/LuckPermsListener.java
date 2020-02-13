@@ -176,7 +176,11 @@ public class LuckPermsListener implements Listener {
                                 JSONArray vipData = new JSONArray();
                                 JSONObject vip = new JSONObject();
                                 vip.put("group", vipType);
-                                vip.put("time", node.getExpiry().toEpochMilli());
+                                try {
+                                    vip.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                                } catch (NullPointerException e) {
+                                    vip.put("time", 0);
+                                }
                                 vipData.add(vip);
                                 if (servers.containsKey(data.getValue())) {
                                     JSONArray existsArray = (JSONArray) servers.get(data.getValue());
