@@ -1,6 +1,7 @@
 name: CraftLogger
-version: 1.0.0
+version: 1.1.0
 description: Log everything
 author: MrWakeCZ
 main: cz.craftmania.logger.Main
-depend: [LuckPerms]
+softdepend: [LuckPerms,CraftEconomy]
+api-version: '1.15'

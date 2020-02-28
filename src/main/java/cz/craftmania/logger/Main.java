@@ -1,5 +1,6 @@
 package cz.craftmania.logger;
 
+import cz.craftmania.logger.listeners.EconomyChangesListener;
 import cz.craftmania.logger.listeners.LuckPermsListener;
 import cz.craftmania.logger.sql.SQLManager;
 import net.luckperms.api.LuckPerms;
@@ -13,8 +14,13 @@ public class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
     private boolean debugEnabled = false;
+    private String serverId = "test";
     private LuckPerms luckPermsApi;
     private SQLManager sql;
+
+    private boolean vipChangesEnabled = false;
+    private boolean economyChangesEnabled = false;
+    private boolean levelsChangesEnabled = false;
 
     @Override
     public void onEnable() {
@@ -27,18 +33,33 @@ public class Main extends JavaPlugin implements Listener {
         saveDefaultConfig();
 
         debugEnabled = getConfig().getBoolean("debug", false);
+        serverId = getConfig().getString("server", "test");
 
-        // LuckPerms register
-        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
-        if (provider != null) {
-            luckPermsApi = provider.getProvider();
-        }
+        vipChangesEnabled = getConfig().getBoolean("logger.vip-status", false);
+        economyChangesEnabled = getConfig().getBoolean("logger.economy-changes", false);
+        levelsChangesEnabled = getConfig().getBoolean("logger.levels-change", false);
 
         // HikariCP
         sql = new SQLManager(this);
 
+        // Plugin loader
         PluginManager pluginManager = this.getServer().getPluginManager();
-        pluginManager.registerEvents(new LuckPermsListener(), this);
+
+        // VIP changes setting
+        if (vipChangesEnabled) {
+
+            // LuckPerms register
+            RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+            if (provider != null) {
+                luckPermsApi = provider.getProvider();
+            }
+
+            pluginManager.registerEvents(new LuckPermsListener(), this);
+        }
+
+        if (economyChangesEnabled) {
+            pluginManager.registerEvents(new EconomyChangesListener(), this);
+        }
     }
 
     @Override
@@ -64,5 +85,21 @@ public class Main extends JavaPlugin implements Listener {
 
     public SQLManager getSQL() {
         return sql;
+    }
+
+    public String getServerId() {
+        return serverId;
+    }
+
+    public boolean isVipChangesEnabled() {
+        return vipChangesEnabled;
+    }
+
+    public boolean isEconomyChangesEnabled() {
+        return economyChangesEnabled;
+    }
+
+    public boolean isLevelsChangesEnabled() {
+        return levelsChangesEnabled;
     }
 }

@@ -2,6 +2,7 @@ package cz.craftmania.logger.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import cz.craftmania.logger.Main;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONObject;
 
@@ -76,6 +77,58 @@ public class SQLManager {
                     conn = pool.getConnection();
                     ps = conn.prepareStatement("UPDATE player_profile SET groups = '" + json.toJSONString() + "' WHERE uuid = ?;");
                     ps.setString(1, uuid.toString());
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    pool.close(conn, ps, null);
+                }
+            }
+        }.runTaskAsynchronously(Main.getInstance());
+    }
+
+    public final void createPlayerEconomyLog(final Player p, final String action, final long amount, final long time) {
+        String server = Main.getInstance().getServerId();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Connection conn = null;
+                PreparedStatement ps = null;
+                try {
+                    conn = pool.getConnection();
+                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
+                    ps.setString(1, p.getName());
+                    ps.setString(2, p.getUniqueId().toString());
+                    ps.setString(3, action);
+                    ps.setLong(4, amount);
+                    ps.setLong(5, time);
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    pool.close(conn, ps, null);
+                }
+            }
+        }.runTaskAsynchronously(Main.getInstance());
+    }
+
+    public final void createPlayerEconomyLog(final Player sender, final Player reciever, final String action, final long amount, final long time) {
+        String server = Main.getInstance().getServerId();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Connection conn = null;
+                PreparedStatement ps = null;
+                try {
+                    conn = pool.getConnection();
+                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,sender,s_uuid,action,amount,time) VALUES (?,?,?,?,?,?,?);");
+                    ps.setString(1, sender.getName());
+                    ps.setString(2, sender.getUniqueId().toString());
+                    ps.setString(3, reciever.getName());
+                    ps.setString(4, reciever.getUniqueId().toString());
+                    ps.setString(5, action);
+                    ps.setLong(6, amount);
+                    ps.setLong(7, time);
                     ps.executeUpdate();
                 } catch (Exception e) {
                     e.printStackTrace();
