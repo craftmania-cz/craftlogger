@@ -2,6 +2,7 @@ package cz.craftmania.logger.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import cz.craftmania.logger.Main;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONObject;
@@ -88,6 +89,31 @@ public class SQLManager {
     }
 
     public final void createPlayerEconomyLog(final Player p, final String action, final long amount, final long time) {
+        String server = Main.getInstance().getServerId();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Connection conn = null;
+                PreparedStatement ps = null;
+                try {
+                    conn = pool.getConnection();
+                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
+                    ps.setString(1, p.getName());
+                    ps.setString(2, p.getUniqueId().toString());
+                    ps.setString(3, action);
+                    ps.setLong(4, amount);
+                    ps.setLong(5, time);
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    pool.close(conn, ps, null);
+                }
+            }
+        }.runTaskAsynchronously(Main.getInstance());
+    }
+
+    public final void createPlayerEconomyLog(final OfflinePlayer p, final String action, final long amount, final long time) {
         String server = Main.getInstance().getServerId();
         new BukkitRunnable() {
             @Override

@@ -5,6 +5,7 @@ import cz.craftmania.crafteconomy.events.vault.PlayerVaultDepositEvent;
 import cz.craftmania.crafteconomy.events.vault.PlayerVaultWithdrawEvent;
 import cz.craftmania.logger.Main;
 import cz.craftmania.logger.utils.Log;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +18,7 @@ public class EconomyChangesListener implements Listener {
      */
     @EventHandler
     public void onPlayerDepositMoney(final PlayerVaultDepositEvent event) {
-        Player player = (Player) event.getOfflinePlayer();
+        OfflinePlayer player = event.getOfflinePlayer();
         Main.getInstance().getSQL().createPlayerEconomyLog(player, "MONEY_DEPOSIT", (long) event.getAmount(), System.currentTimeMillis());
         Log.withPrefix("[A:MONEY_DEPOSIT]: " + player.getName() + "(" + player.getUniqueId().toString() + ") -> " + event.getAmount());
     }
@@ -28,7 +29,7 @@ public class EconomyChangesListener implements Listener {
      */
     @EventHandler
     public void onPlayerWithdrawMoney(final PlayerVaultWithdrawEvent event) {
-        Player player = (Player) event.getOfflinePlayer();
+        OfflinePlayer player = event.getOfflinePlayer();
         Main.getInstance().getSQL().createPlayerEconomyLog(player, "MONEY_WITHDRAW", (long) event.getAmount(), System.currentTimeMillis());
         Log.withPrefix("[A:MONEY_WITHDRAW]: " + player.getName() + "(" + player.getUniqueId().toString() + ") -> " + event.getAmount());
     }
