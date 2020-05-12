@@ -23,7 +23,7 @@ public class LuckPermsListener implements Listener {
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
-            if (!(Main.getInstance().getSQL().getLastUpdateVIP(player.getUniqueId()) <= (System.currentTimeMillis() - 259200000L))) { // 3 dny
+            if (!(Main.getInstance().getSQL().getLastUpdateVIP(player.getUniqueId()) <= (System.currentTimeMillis() - 86400000L))) { // 1 den
                 Log.debug("Hrac nedosahl data updatu VIP statusu.");
                 return;
             }
