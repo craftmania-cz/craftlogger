@@ -1,6 +1,7 @@
 package cz.craftmania.logger;
 
 import cz.craftmania.logger.listeners.EconomyChangesListener;
+import cz.craftmania.logger.listeners.EconomyLevelUpListener;
 import cz.craftmania.logger.listeners.LuckPermsListener;
 import cz.craftmania.logger.sql.SQLManager;
 import net.luckperms.api.LuckPerms;
@@ -57,8 +58,13 @@ public class Main extends JavaPlugin implements Listener {
             pluginManager.registerEvents(new LuckPermsListener(), this);
         }
 
+        // Economy changes
         if (economyChangesEnabled) {
             pluginManager.registerEvents(new EconomyChangesListener(), this);
+        }
+
+        if (levelsChangesEnabled) {
+            pluginManager.registerEvents(new EconomyLevelUpListener(), this);
         }
     }
 

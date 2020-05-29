@@ -165,6 +165,31 @@ public class SQLManager {
         }.runTaskAsynchronously(Main.getInstance());
     }
 
+    public final void createLevelUpLog(final Player p, final String action, final long level, final long time) {
+        String server = Main.getInstance().getServerId();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Connection conn = null;
+                PreparedStatement ps = null;
+                try {
+                    conn = pool.getConnection();
+                    ps = conn.prepareStatement("INSERT INTO levels_" + server + "_log (nick,uuid,action,level,time) VALUES (?,?,?,?,?);");
+                    ps.setString(1, p.getName());
+                    ps.setString(2, p.getUniqueId().toString());
+                    ps.setString(3, action);
+                    ps.setLong(4, level);
+                    ps.setLong(5, time);
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    pool.close(conn, ps, null);
+                }
+            }
+        }.runTaskAsynchronously(Main.getInstance());
+    }
+
 
 
 }
