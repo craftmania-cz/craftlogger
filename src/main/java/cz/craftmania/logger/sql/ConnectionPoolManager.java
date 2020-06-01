@@ -49,6 +49,7 @@ public class ConnectionPoolManager {
         config.setMinimumIdle(minimumConnections);
         config.setMaximumPoolSize(maximumConnections);
         config.setConnectionTimeout(connectionTimeout);
+        config.setPoolName("craftlogger");
         dataSource = new HikariDataSource(config);
     }
 
