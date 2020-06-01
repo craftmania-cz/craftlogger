@@ -190,7 +190,7 @@ public class SQLManager {
         }.runTaskAsynchronously(Main.getInstance());
     }
 
-    public final void createCommandLog(final Player p, final String action, final String command, final long time) {
+    public final void createDataLog(final Player p, final String tableName, final String action, final String command, final long time) {
         String server = Main.getInstance().getServerId();
         new BukkitRunnable() {
             @Override
@@ -199,7 +199,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO commands_" + server + "_log (nick,uuid,action,command,time) VALUES (?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO " + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);");
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);

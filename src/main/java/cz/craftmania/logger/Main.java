@@ -1,9 +1,6 @@
 package cz.craftmania.logger;
 
-import cz.craftmania.logger.listeners.CommandLogListener;
-import cz.craftmania.logger.listeners.EconomyChangesListener;
-import cz.craftmania.logger.listeners.EconomyLevelUpListener;
-import cz.craftmania.logger.listeners.LuckPermsListener;
+import cz.craftmania.logger.listeners.*;
 import cz.craftmania.logger.sql.SQLManager;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
@@ -24,6 +21,7 @@ public class Main extends JavaPlugin implements Listener {
     private boolean economyChangesEnabled = false;
     private boolean levelsChangesEnabled = false;
     private boolean commandLoggerEnabled = false;
+    private boolean chatLoggerEnabled = false;
 
     @Override
     public void onEnable() {
@@ -73,6 +71,10 @@ public class Main extends JavaPlugin implements Listener {
         if (commandLoggerEnabled) {
             pluginManager.registerEvents(new CommandLogListener(), this);
         }
+
+        if (chatLoggerEnabled) {
+            pluginManager.registerEvents(new ChatLoggerListener(), this);
+        }
     }
 
     @Override
@@ -118,5 +120,9 @@ public class Main extends JavaPlugin implements Listener {
 
     public boolean isCommandLoggerEnabled() {
         return commandLoggerEnabled;
+    }
+
+    public boolean isChatLoggerEnabled() {
+        return chatLoggerEnabled;
     }
 }

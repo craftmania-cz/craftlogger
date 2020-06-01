@@ -34,3 +34,6 @@ logger:
     enabled: false
     ignored:
       - brekekeke
+
+  # Ukládání chatu do logů
+  chat-logs: false

@@ -17,7 +17,7 @@ public class CommandLogListener implements Listener {
                 return;
             }
         }
-        Main.getInstance().getSQL().createCommandLog(event.getPlayer(), "COMMAND", event.getMessage(), System.currentTimeMillis());
+        Main.getInstance().getSQL().createDataLog(event.getPlayer(), "command", "COMMAND", event.getMessage(), System.currentTimeMillis());
         Log.debug("[A:COMMAND]: " + event.getPlayer().getName() + "(" + event.getPlayer().getUniqueId().toString() + ") -> " + event.getMessage());
 
     }
