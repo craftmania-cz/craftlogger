@@ -190,6 +190,31 @@ public class SQLManager {
         }.runTaskAsynchronously(Main.getInstance());
     }
 
+    public final void createCommandLog(final Player p, final String action, final String command, final long time) {
+        String server = Main.getInstance().getServerId();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Connection conn = null;
+                PreparedStatement ps = null;
+                try {
+                    conn = pool.getConnection();
+                    ps = conn.prepareStatement("INSERT INTO commands_" + server + "_log (nick,uuid,action,command,time) VALUES (?,?,?,?,?);");
+                    ps.setString(1, p.getName());
+                    ps.setString(2, p.getUniqueId().toString());
+                    ps.setString(3, action);
+                    ps.setString(4, command);
+                    ps.setLong(5, time);
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    pool.close(conn, ps, null);
+                }
+            }
+        }.runTaskAsynchronously(Main.getInstance());
+    }
+
 
 
 }

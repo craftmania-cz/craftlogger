@@ -1,5 +1,6 @@
 package cz.craftmania.logger;
 
+import cz.craftmania.logger.listeners.CommandLogListener;
 import cz.craftmania.logger.listeners.EconomyChangesListener;
 import cz.craftmania.logger.listeners.EconomyLevelUpListener;
 import cz.craftmania.logger.listeners.LuckPermsListener;
@@ -22,6 +23,7 @@ public class Main extends JavaPlugin implements Listener {
     private boolean vipChangesEnabled = false;
     private boolean economyChangesEnabled = false;
     private boolean levelsChangesEnabled = false;
+    private boolean commandLoggerEnabled = false;
 
     @Override
     public void onEnable() {
@@ -39,6 +41,7 @@ public class Main extends JavaPlugin implements Listener {
         vipChangesEnabled = getConfig().getBoolean("logger.vip-status", false);
         economyChangesEnabled = getConfig().getBoolean("logger.economy-changes", false);
         levelsChangesEnabled = getConfig().getBoolean("logger.levels-change", false);
+        commandLoggerEnabled = getConfig().getBoolean("logger.commands.enabled", false);
 
         // HikariCP
         sql = new SQLManager(this);
@@ -65,6 +68,10 @@ public class Main extends JavaPlugin implements Listener {
 
         if (levelsChangesEnabled) {
             pluginManager.registerEvents(new EconomyLevelUpListener(), this);
+        }
+
+        if (commandLoggerEnabled) {
+            pluginManager.registerEvents(new CommandLogListener(), this);
         }
     }
 
@@ -107,5 +114,9 @@ public class Main extends JavaPlugin implements Listener {
 
     public boolean isLevelsChangesEnabled() {
         return levelsChangesEnabled;
+    }
+
+    public boolean isCommandLoggerEnabled() {
+        return commandLoggerEnabled;
     }
 }

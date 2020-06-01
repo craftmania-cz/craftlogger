@@ -28,3 +28,9 @@ logger:
 
   # Změny v Levels (vyžaduje CraftEconomy 1.2+)
   levels-change: false
+
+  # Ukládání příkazů do logů
+  commands:
+    enabled: false
+    ignored:
+      - brekekeke
