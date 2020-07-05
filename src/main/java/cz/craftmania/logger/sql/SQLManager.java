@@ -35,7 +35,7 @@ public class SQLManager {
         PreparedStatement ps = null;
         try {
             conn = pool.getConnection();
-            ps = conn.prepareStatement("SELECT groups_last_check FROM player_profile WHERE uuid = '" + uuid.toString() + "';");
+            ps = conn.prepareStatement("SELECT groups_last_check FROM minigames.player_profile WHERE uuid = '" + uuid.toString() + "';");
             ps.executeQuery();
             if (ps.getResultSet().next()) {
                 return ps.getResultSet().getLong("groups_last_check");
@@ -56,7 +56,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("UPDATE player_profile SET groups_last_check = '" + time + "' WHERE uuid = ?;");
+                    ps = conn.prepareStatement("UPDATE minigames.player_profile SET groups_last_check = '" + time + "' WHERE uuid = ?;");
                     ps.setString(1, uuid.toString());
                     ps.executeUpdate();
                 } catch (Exception e) {
@@ -76,7 +76,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("UPDATE player_profile SET groups = '" + json.toJSONString() + "' WHERE uuid = ?;");
+                    ps = conn.prepareStatement("UPDATE minigames.player_profile SET groups = '" + json.toJSONString() + "' WHERE uuid = ?;");
                     ps.setString(1, uuid.toString());
                     ps.executeUpdate();
                 } catch (Exception e) {
@@ -97,7 +97,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO logs.economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);
@@ -122,7 +122,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO logs.economy_" + server + "_log (reciever,r_uuid,action,amount,time) VALUES (?,?,?,?,?);");
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);
@@ -147,7 +147,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO economy_" + server + "_log (reciever,r_uuid,sender,s_uuid,action,amount,time) VALUES (?,?,?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO logs.economy_" + server + "_log (reciever,r_uuid,sender,s_uuid,action,amount,time) VALUES (?,?,?,?,?,?,?);");
                     ps.setString(1, sender.getName());
                     ps.setString(2, sender.getUniqueId().toString());
                     ps.setString(3, reciever.getName());
@@ -174,7 +174,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO levels_" + server + "_log (nick,uuid,action,level,time) VALUES (?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO logs.levels_" + server + "_log (nick,uuid,action,level,time) VALUES (?,?,?,?,?);");
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);
