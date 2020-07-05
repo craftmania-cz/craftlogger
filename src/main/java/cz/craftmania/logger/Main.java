@@ -22,6 +22,7 @@ public class Main extends JavaPlugin implements Listener {
     private boolean levelsChangesEnabled = false;
     private boolean commandLoggerEnabled = false;
     private boolean chatLoggerEnabled = false;
+    private boolean joinAndLeaveEnabled = false;
 
     @Override
     public void onEnable() {
@@ -40,6 +41,8 @@ public class Main extends JavaPlugin implements Listener {
         economyChangesEnabled = getConfig().getBoolean("logger.economy-changes", false);
         levelsChangesEnabled = getConfig().getBoolean("logger.levels-change", false);
         commandLoggerEnabled = getConfig().getBoolean("logger.commands.enabled", false);
+        chatLoggerEnabled = getConfig().getBoolean("logger.chat-logs", false);
+        joinAndLeaveEnabled = getConfig().getBoolean("logger.login-logout", false);
 
         // HikariCP
         sql = new SQLManager(this);
@@ -74,6 +77,10 @@ public class Main extends JavaPlugin implements Listener {
 
         if (chatLoggerEnabled) {
             pluginManager.registerEvents(new ChatLoggerListener(), this);
+        }
+
+        if (joinAndLeaveEnabled) {
+            pluginManager.registerEvents(new JoinAndLeaveLoggerListener(), this);
         }
     }
 
@@ -124,5 +131,9 @@ public class Main extends JavaPlugin implements Listener {
 
     public boolean isChatLoggerEnabled() {
         return chatLoggerEnabled;
+    }
+
+    public boolean isJoinAndLeaveEnabled() {
+        return joinAndLeaveEnabled;
     }
 }

@@ -37,3 +37,6 @@ logger:
 
   # Ukládání chatu do logů
   chat-logs: false
+
+  # Ukládání join and leave logů
+  login-logout: false
