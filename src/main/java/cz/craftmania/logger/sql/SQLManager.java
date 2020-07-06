@@ -190,7 +190,7 @@ public class SQLManager {
         }.runTaskAsynchronously(Main.getInstance());
     }
 
-    public final void createDataLog(final Player p, final String tableName, final String action, final String command, final long time) {
+    public final void createDataLog(final Player p, final String tableName, final String action, final String data, final long time) {
         String server = Main.getInstance().getServerId();
         new BukkitRunnable() {
             @Override
@@ -203,7 +203,7 @@ public class SQLManager {
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);
-                    ps.setString(4, command);
+                    ps.setString(4, data);
                     ps.setLong(5, time);
                     ps.executeUpdate();
                 } catch (Exception e) {
