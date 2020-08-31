@@ -34,6 +34,7 @@ public class LuckPermsListener implements Listener {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+            if (user == null) return;
 
             JSONObject finalJson = new JSONObject();
 
@@ -42,7 +43,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.owner")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "owner");
+                        addPrimaryGroupToObject(finalJson, "owner");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -54,7 +55,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.developer")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "developer");
+                        addPrimaryGroupToObject(finalJson, "developer");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -66,7 +67,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.eventer")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "eventer");
+                        addPrimaryGroupToObject(finalJson, "eventer");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -78,7 +79,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.admin")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "admin");
+                        addPrimaryGroupToObject(finalJson, "admin");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -90,7 +91,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.builder")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "builder");
+                        addPrimaryGroupToObject(finalJson, "builder");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -102,7 +103,19 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.helper")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "helper");
+                        addPrimaryGroupToObject(finalJson, "helper");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
+                if (node.getKey().contains("group.tester")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        addPrimaryGroupToObject(finalJson, "tester");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -114,7 +127,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.obsidian")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "obsidian");
+                        addPrimaryGroupToObject(finalJson, "obsidian");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -126,7 +139,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.emerald")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "emerald");
+                        addPrimaryGroupToObject(finalJson, "emerald");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -138,7 +151,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.diamond")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "diamond");
+                        addPrimaryGroupToObject(finalJson, "diamond");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -150,7 +163,7 @@ public class LuckPermsListener implements Listener {
                 if (node.getKey().contains("group.gold")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
-                        finalJson.put("primary", "gold");
+                        addPrimaryGroupToObject(finalJson, "gold");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -200,5 +213,43 @@ public class LuckPermsListener implements Listener {
             Main.getInstance().getSQL().updateLastUpdateVIP(player.getUniqueId(), System.currentTimeMillis());
 
         }, 10L);
+    }
+
+    private JSONObject addPrimaryGroupToObject(JSONObject obj, String value) {
+        GroupHierarchy groupHierarchy = GroupHierarchy.valueOf(value.toUpperCase());
+        if (obj.containsKey("primary")) {
+            GroupHierarchy current = GroupHierarchy.valueOf(obj.get("primary").toString());
+            if (groupHierarchy.getValue() > current.getValue()) {
+                obj.put("primary", value);
+            }
+        }
+        return obj;
+    }
+
+    private enum GroupHierarchy {
+
+        OWNER(12),
+        MANAGER(11),
+        DEVELOPER(10),
+        EVENTER(9),
+        ADMIN(8),
+        BUILDER(7),
+        HELPER(6),
+        TESTER(5),
+        OBSIDIAN(4),
+        EMERALD(3),
+        DIAMOND(2),
+        GOLD(1),
+        DEFAULT(0);
+
+        private final int value;
+
+        GroupHierarchy(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }
