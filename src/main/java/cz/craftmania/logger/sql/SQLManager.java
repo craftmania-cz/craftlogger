@@ -199,7 +199,7 @@ public class SQLManager {
                 PreparedStatement ps = null;
                 try {
                     conn = pool.getConnection();
-                    ps = conn.prepareStatement("INSERT INTO " + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);");
+                    ps = conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);");
                     ps.setString(1, p.getName());
                     ps.setString(2, p.getUniqueId().toString());
                     ps.setString(3, action);
