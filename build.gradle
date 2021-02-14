@@ -22,6 +22,7 @@ clean { delete "./build" }
 repositories {
     mavenCentral()
     maven { url "https://packages.craftmania.cz/repository/craftmania/" }
+    maven { url "https://packages.craftmania.cz/repository/third-party/" }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
 }
 
@@ -31,7 +32,7 @@ dependencies {
     }
     compile group: 'net.luckperms', name: 'api', version: '5.0'
     compile group: 'com.zaxxer', name: 'HikariCP', version:'2.7.4'
-    compileOnly group: 'cz.craftmania', name: 'crafteconomy', version: '1.4.1'
+    compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '1.4.1'
 }
 
 task compilePlugin(type: Jar) {
