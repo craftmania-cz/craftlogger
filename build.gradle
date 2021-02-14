@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 apply plugin: 'java'
@@ -16,22 +17,39 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-clean { delete "./target" }
-clean { delete "./build" }
+shadowJar {
+    baseName = 'craftlogger'
+    classifier = null
+    version = this.version
+
+    relocate 'co.aikar.commands', 'cz.craftmania.logger.acf'
+    relocate 'co.aikar.locales', 'cz.craftmania.logger.locales'
+}
+
+build.dependsOn shadowJar
 
 repositories {
     mavenCentral()
     maven { url "https://packages.craftmania.cz/repository/craftmania/" }
     maven { url "https://packages.craftmania.cz/repository/third-party/" }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://repo.aikar.co/content/groups/aikar/" }
 }
 
 dependencies {
+
+    // main
     compileOnly ('org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT') {
         exclude group: 'net.md-5'
     }
-    compile group: 'net.luckperms', name: 'api', version: '5.0'
+    compileOnly group: 'net.luckperms', name: 'api', version: '5.0'
     compile group: 'com.zaxxer', name: 'HikariCP', version:'2.7.4'
+    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    // Commands
+    compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
+
+    // CraftMania
     compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '1.4.1'
 }
 
