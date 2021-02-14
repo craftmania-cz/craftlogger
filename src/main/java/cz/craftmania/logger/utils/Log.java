@@ -7,7 +7,7 @@ import org.bukkit.ChatColor;
 public class Log {
 
     public static void withPrefix(String s) {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[CraftLogger] " + ChatColor.WHITE + s);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[CraftLogger] " + ChatColor.WHITE + s);
     }
 
     public static void normalMessage(String s) {
