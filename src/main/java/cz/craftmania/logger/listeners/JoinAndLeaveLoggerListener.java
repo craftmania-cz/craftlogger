@@ -13,18 +13,18 @@ public class JoinAndLeaveLoggerListener implements Listener {
     @EventHandler
     public void onJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        Main.getInstance().getSQL().createDataLog(player, "join", "JOIN", player.getAddress().toString(), System.currentTimeMillis());
+        Main.getInstance().getSQL().createDataLog(player, "gate", "JOIN", player.getAddress().toString(), System.currentTimeMillis());
     }
 
     @EventHandler
     public void onLeave(final PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        Main.getInstance().getSQL().createDataLog(player, "leave", "LEAVE", player.getAddress().toString(), System.currentTimeMillis());
+        Main.getInstance().getSQL().createDataLog(player, "gate", "LEAVE", player.getAddress().toString(), System.currentTimeMillis());
     }
 
     @EventHandler
     public void onKick(final PlayerKickEvent event) {
         final Player player = event.getPlayer();
-        Main.getInstance().getSQL().createDataLog(player, "kicks", "KICK", null, System.currentTimeMillis());
+        Main.getInstance().getSQL().createDataLog(player, "gate", "KICK", null, System.currentTimeMillis());
     }
 }

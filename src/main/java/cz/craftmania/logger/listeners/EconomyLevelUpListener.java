@@ -12,7 +12,7 @@ public class EconomyLevelUpListener implements Listener {
     @EventHandler
     public void onPlayerLevelUp(final PlayerLevelUpEvent event) {
         Player player = event.getPlayer().getPlayer(); // ?????
-        Main.getInstance().getSQL().createLevelUpLog(player, "LEVEL_UP", event.getNewLevel(), System.currentTimeMillis());
+        Main.getInstance().getSQL().createDataLog(player, "levels", "LEVEL_UP", event.getNewLevel(), System.currentTimeMillis());
         Log.debug("[A:LEVEL_UP]: " + player.getName() + "(" + player.getUniqueId().toString() + ") -> " + event.getAmount());
     }
 }
