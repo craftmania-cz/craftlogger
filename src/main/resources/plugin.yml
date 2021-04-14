@@ -3,5 +3,7 @@ version: 1.1.0
 description: Log everything
 author: MrWakeCZ
 main: cz.craftmania.logger.Main
-softdepend: [LuckPerms,CraftEconomy]
+depend:
+  - LuckPerms
+softdepend: [CraftEconomy]
 api-version: '1.15'

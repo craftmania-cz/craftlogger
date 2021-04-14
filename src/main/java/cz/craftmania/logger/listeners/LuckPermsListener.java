@@ -18,12 +18,12 @@ import java.util.concurrent.ExecutionException;
 public class LuckPermsListener implements Listener {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) throws ExecutionException, InterruptedException {
+    public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
 
-            if (!(Main.getInstance().getSQL().getLastUpdateVIP(player.getUniqueId()) <= (System.currentTimeMillis() - 86400000L))) { // 1 den
+            if (!(Main.getInstance().getSQL().getLastUpdateVIP(player.getUniqueId()) <= (System.currentTimeMillis() - 10L))) { // 1 den
                 Log.debug("Hrac nedosahl data updatu VIP statusu.");
                 return;
             }
@@ -43,6 +43,18 @@ public class LuckPermsListener implements Listener {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
                         finalJson.put("primary", "owner");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
+                if (node.getKey().contains("group.manager")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        finalJson.put("primary", "manager");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
@@ -75,6 +87,18 @@ public class LuckPermsListener implements Listener {
                         return;
                     }
                 }
+                if (node.getKey().contains("group.adminka")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        finalJson.put("primary", "adminka");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
                 if (node.getKey().contains("group.admin")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
@@ -99,10 +123,46 @@ public class LuckPermsListener implements Listener {
                         return;
                     }
                 }
+                if (node.getKey().contains("group.artist")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        finalJson.put("primary", "artist");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
+                if (node.getKey().contains("group.helperka")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        finalJson.put("primary", "helperka");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
                 if (node.getKey().contains("group.helper")) {
                     ImmutableContextSet contexts = node.getContexts();
                     if (contexts.size() == 0) {
                         finalJson.put("primary", "helper");
+                        try {
+                            finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
+                        } catch (NullPointerException e) {
+                            finalJson.put("time", 0);
+                        }
+                        return;
+                    }
+                }
+                if (node.getKey().contains("group.tester")) {
+                    ImmutableContextSet contexts = node.getContexts();
+                    if (contexts.size() == 0) {
+                        finalJson.put("primary", "tester");
                         try {
                             finalJson.put("time", Objects.requireNonNull(node.getExpiry()).toEpochMilli());
                         } catch (NullPointerException e) {
