@@ -22,7 +22,7 @@ class LuckPermsListener : Listener {
         val player = event.player
 
         Bukkit.getScheduler().runTaskLater(Main.instance!!, Runnable {
-            if (Main.instance!!.sQL!!.getLastUpdateVIP(player.uniqueId) > System.currentTimeMillis() - 10L) { // 1 den
+            if (Main.instance!!.sQL!!.getLastUpdateVIP(player.uniqueId) > System.currentTimeMillis() - 1800000L) { // 30 minut
                 Log.debug("Hrac nedosahl data updatu VIP statusu.")
                 return@Runnable
             }
