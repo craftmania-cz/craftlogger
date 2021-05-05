@@ -26,199 +26,53 @@ class LuckPermsListener : Listener {
                 Log.debug("Hrac nedosahl data updatu VIP statusu.")
                 return@Runnable
             }
-            var user: User? = null
+
+            val user: User?
             try {
                 user = Main.instance!!.luckPermsApi!!.userManager.loadUser(player.uniqueId).get()
             } catch (e: InterruptedException) {
                 e.printStackTrace()
+                return@Runnable
             } catch (e: ExecutionException) {
                 e.printStackTrace()
+                return@Runnable
             }
             val finalJson = JSONObject()
 
-            // Detekce primarní skupiny (global VIP nebo skupiny)
-            user!!.nodes.forEach(Consumer { node: Node ->
-                if (node.key.contains("group.owner")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "owner"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
+            when (user!!.primaryGroup) {
+                "owner" -> finalJson["primary"] = "owner"
+                "manager" -> finalJson["primary"] = "manager"
+                "developer" -> finalJson["primary"] = "developer"
+                "eventer" -> finalJson["primary"] = "eventer"
+                "adminka" -> finalJson["primary"] = "adminka"
+                "admin" -> finalJson["primary"] = "admin"
+                "builder" -> finalJson["primary"] = "builder"
+                "artist" -> finalJson["primary"] = "artist"
+                "helperka" -> finalJson["primary"] = "helperka"
+                "helper" -> finalJson["primary"] = "helper"
+                "tester" -> finalJson["primary"] = "tester"
+                else -> {
+                    val globalVipRanks = arrayOf("obsidian", "emerald", "diamond", "gold")
+                    user.distinctNodes.forEach(Consumer { node: Node ->
+                        run {
+                            for (vipType in globalVipRanks) {
+                                if (node.key.contains("group.$vipType")) {
+                                    val contexts = node.contexts
+                                    if (contexts.size() == 0) {
+                                        finalJson["primary"] = vipType
+                                        try {
+                                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
+                                        } catch (e: NullPointerException) {
+                                            finalJson["time"] = 0
+                                        }
+                                        break
+                                    }
+                                }
+                            }
                         }
-                        return@Consumer
-                    }
+                    })
                 }
-                if (node.key.contains("group.manager")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "manager"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.developer")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "developer"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.eventer")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "eventer"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.adminka")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "adminka"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.admin")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "admin"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.builder")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "builder"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.artist")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "artist"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.helperka")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "helperka"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.helper")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "helper"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.tester")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "tester"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.obsidian")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "obsidian"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.emerald")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "emerald"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.diamond")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "diamond"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-                if (node.key.contains("group.gold")) {
-                    val contexts = node.contexts
-                    if (contexts.size() == 0) {
-                        finalJson["primary"] = "gold"
-                        try {
-                            finalJson["time"] = Objects.requireNonNull(node.expiry)!!.toEpochMilli()
-                        } catch (e: NullPointerException) {
-                            finalJson["time"] = 0
-                        }
-                        return@Consumer
-                    }
-                }
-            })
+            }
 
             // Prepare servers array
             val servers = JSONObject()
@@ -226,7 +80,7 @@ class LuckPermsListener : Listener {
 
             // VIP ranky
             val vipArray = arrayOf("obsidian", "emerald", "diamond", "gold")
-            user.nodes.forEach(Consumer { node: Node ->
+            user.distinctNodes.forEach(Consumer { node: Node ->
                 for (vipType in vipArray) {
                     if (node.key.contains("group.$vipType")) {
                         val contexts = node.contexts
