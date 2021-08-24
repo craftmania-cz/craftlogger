@@ -1,4 +1,4 @@
-package cz.craftmania.logger.listeners
+package cz.craftmania.logger.listeners.internal
 
 import cz.craftmania.logger.Main
 import org.bukkit.event.EventHandler

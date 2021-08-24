@@ -1,4 +1,4 @@
-package cz.craftmania.logger.listeners
+package cz.craftmania.logger.listeners.external
 
 import cz.craftmania.crafteconomy.events.PlayerLevelUpEvent
 import cz.craftmania.logger.Main

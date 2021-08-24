@@ -1,4 +1,4 @@
-package cz.craftmania.logger.listeners
+package cz.craftmania.logger.listeners.external
 
 import cz.craftmania.crafteconomy.events.vault.CraftEconomyPlayerPayEvent
 import cz.craftmania.crafteconomy.events.vault.PlayerVaultDepositEvent

@@ -1,4 +1,4 @@
-package cz.craftmania.logger.listeners
+package cz.craftmania.logger.listeners.internal
 
 import cz.craftmania.logger.Main
 import cz.craftmania.logger.utils.Log

@@ -1,10 +1,14 @@
 package cz.craftmania.logger
 
-import cz.craftmania.logger.listeners.*
+import cz.craftmania.logger.listeners.external.EconomyChangesListener
+import cz.craftmania.logger.listeners.external.EconomyLevelUpListener
+import cz.craftmania.logger.listeners.external.LuckPermsListener
+import cz.craftmania.logger.listeners.internal.ChatLoggerListener
+import cz.craftmania.logger.listeners.internal.CommandLogListener
+import cz.craftmania.logger.listeners.internal.JoinAndLeaveLoggerListener
 import cz.craftmania.logger.sql.SQLManager
 import net.luckperms.api.LuckPerms
 import org.bukkit.Bukkit
-import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
 class Main : JavaPlugin() {
