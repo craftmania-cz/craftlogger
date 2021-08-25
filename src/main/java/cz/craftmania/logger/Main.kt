@@ -8,6 +8,7 @@ import cz.craftmania.logger.listeners.internal.ChatLoggerListener
 import cz.craftmania.logger.listeners.internal.CommandLogListener
 import cz.craftmania.logger.listeners.internal.JoinAndLeaveLoggerListener
 import cz.craftmania.logger.sql.SQLManager
+import cz.craftmania.logger.utils.Log
 import net.luckperms.api.LuckPerms
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -51,9 +52,11 @@ class Main : JavaPlugin() {
         isCommandLoggerEnabled = config.getBoolean("logger.commands.enabled", false)
         isChatLoggerEnabled = config.getBoolean("logger.chat-logs", false)
         isJoinAndLeaveEnabled = config.getBoolean("logger.login-logout", false)
+        Log.withPrefix("Server je registrovaný jako: $serverId")
 
         // HikariCP
         sQL = SQLManager(this)
+        Log.withPrefix("Aktivace MySQL připojení.")
 
         // Plugin loader
         val pluginManager = server.pluginManager
@@ -69,17 +72,21 @@ class Main : JavaPlugin() {
                 luckPermsApi = provider.provider
             }
             pluginManager.registerEvents(LuckPermsListener(), this)
+            Log.withPrefix("Server bude ukládat a aktualizovat VIP v Ccomunity.")
         }
 
         // Economy changes
         if (isEconomyChangesEnabled) {
             pluginManager.registerEvents(EconomyChangesListener(), this)
+            Log.withPrefix("EconomyChangeListener je aktivován.")
         }
         if (isLevelsChangesEnabled) {
             pluginManager.registerEvents(EconomyLevelUpListener(), this)
+            Log.withPrefix("EconomyLevelUpListener je aktivován.")
         }
         if (isCommandLoggerEnabled) {
             pluginManager.registerEvents(CommandLogListener(), this)
+            Log.withPrefix("CommandLogListener je aktivován.")
         }
         if (isChatLoggerEnabled) {
             pluginManager.registerEvents(ChatLoggerListener(), this)
@@ -91,6 +98,7 @@ class Main : JavaPlugin() {
         }
         if (isJoinAndLeaveEnabled) {
             pluginManager.registerEvents(JoinAndLeaveLoggerListener(), this)
+            Log.withPrefix("JoinAndLeaveLoggerListener je aktivován.")
         }
     }
 
