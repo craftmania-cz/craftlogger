@@ -39,6 +39,10 @@ repositories {
     maven { url "https://packages.craftmania.cz/repository/third-party/" }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "https://repo.aikar.co/content/groups/aikar/" }
+    maven {
+        name = "IntellectualSites"
+        url = uri("https://mvn.intellectualsites.com/content/groups/public/")
+    }
 }
 
 dependencies {
@@ -50,6 +54,8 @@ dependencies {
     compileOnly group: 'net.luckperms', name: 'api', version: '5.0'
     compile group: 'com.zaxxer', name: 'HikariCP', version:'2.7.4'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compileOnly("com.plotsquared:PlotSquared-Core:6.0.9-SNAPSHOT")
+    compileOnly("com.plotsquared:PlotSquared-Bukkit:6.0.9-SNAPSHOT")
 
     // Commands
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'

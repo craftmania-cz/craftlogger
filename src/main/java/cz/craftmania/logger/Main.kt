@@ -3,6 +3,7 @@ package cz.craftmania.logger
 import cz.craftmania.logger.listeners.external.EconomyChangesListener
 import cz.craftmania.logger.listeners.external.EconomyLevelUpListener
 import cz.craftmania.logger.listeners.external.LuckPermsListener
+import cz.craftmania.logger.listeners.external.PlotChatListener
 import cz.craftmania.logger.listeners.internal.ChatLoggerListener
 import cz.craftmania.logger.listeners.internal.CommandLogListener
 import cz.craftmania.logger.listeners.internal.JoinAndLeaveLoggerListener
@@ -82,6 +83,11 @@ class Main : JavaPlugin() {
         }
         if (isChatLoggerEnabled) {
             pluginManager.registerEvents(ChatLoggerListener(), this)
+            Log.withPrefix("ChatLoggerListener je aktivován.")
+            if (this.server.pluginManager.isPluginEnabled("PlotSquared")) {
+                pluginManager.registerEvents(PlotChatListener(), this)
+                Log.withPrefix("PlotChatListener je aktivován.")
+            }
         }
         if (isJoinAndLeaveEnabled) {
             pluginManager.registerEvents(JoinAndLeaveLoggerListener(), this)

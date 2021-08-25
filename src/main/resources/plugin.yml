@@ -5,5 +5,7 @@ author: MrWakeCZ
 main: cz.craftmania.logger.Main
 depend:
   - LuckPerms
-softdepend: [CraftEconomy]
+softdepend:
+  - CraftEconomy
+  - PlotSquared
 api-version: '1.15'
