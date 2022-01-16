@@ -11,7 +11,7 @@ class VotePartyListener: Listener {
     @EventHandler
     fun onVotePartyEnd(event: PartyStartEvent) {
         Main.instance!!.sQL!!.createDataLog(
-            "VOTEPARTY", "VOTE_PARTY", "START", null, System.currentTimeMillis())
+            "VOTEPARTY", "vote_events", "START", null, System.currentTimeMillis())
         Log.withPrefix("[A:VOTEPARTY_START]: Action called.")
     }
 }

@@ -1,5 +1,7 @@
 package cz.craftmania.logger
 
+import co.aikar.commands.PaperCommandManager
+import cz.craftmania.logger.commands.LoggerCommand
 import cz.craftmania.logger.listeners.external.*
 import cz.craftmania.logger.listeners.internal.ChatLoggerListener
 import cz.craftmania.logger.listeners.internal.CommandLogListener
@@ -105,6 +107,15 @@ class Main : JavaPlugin() {
             Log.withPrefix("VotePartyListener je aktivován.")
             pluginManager.registerEvents(VotePartyListener(), this)
         }
+
+        // Commands
+        commandManager = PaperCommandManager(this)
+        commandManager!!.enableUnstableAPI("help")
+
+        // Registrace příkazu
+        commandManager!!.registerCommand(LoggerCommand())
+
+        Log.withPrefix("CraftLogger byl úspěšně načten.")
     }
 
     override fun onDisable() {
@@ -117,6 +128,8 @@ class Main : JavaPlugin() {
     companion object {
 
         var instance: Main? = null
+            private set
+        var commandManager: PaperCommandManager? = null
             private set
     }
 }
