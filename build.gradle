@@ -35,13 +35,19 @@ build.dependsOn shadowJar
 
 repositories {
     mavenCentral()
-    maven { url "https://packages.craftmania.cz/repository/craftmania/" }
-    maven { url "https://packages.craftmania.cz/repository/third-party/" }
+    flatDir { dirs 'libs' }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "https://repo.aikar.co/content/groups/aikar/" }
     maven {
         name = "IntellectualSites"
         url = uri("https://mvn.intellectualsites.com/content/groups/public/")
+    }
+    maven {
+        url "https://maven.pkg.github.com/craftmania-cz/crafteconomy"
+        credentials {
+            username = GPR_USER
+            password = GPR_TOKEN
+        }
     }
 }
 
@@ -54,14 +60,14 @@ dependencies {
     compileOnly group: 'net.luckperms', name: 'api', version: '5.0'
     compile group: 'com.zaxxer', name: 'HikariCP', version:'2.7.4'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    compileOnly("com.plotsquared:PlotSquared-Core:6.0.9-SNAPSHOT")
+    compileOnly name: 'PlotSquared-Bukkit-6.3.0-Premium'
     compileOnly("com.plotsquared:PlotSquared-Bukkit:6.0.9-SNAPSHOT")
 
     // Commands
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
 
     // CraftMania
-    compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '1.4.1'
+    compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '1.5.2'
 }
 
 task compilePlugin(type: Jar) {
