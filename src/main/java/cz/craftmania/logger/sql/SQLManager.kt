@@ -203,6 +203,30 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
+    fun createDataLog(type: String, tableName: String, action: String?, data: String?, time: Long) {
+        val server: String = Main.instance!!.serverId
+        object : BukkitRunnable() {
+            override fun run() {
+                var conn: Connection? = null
+                var ps: PreparedStatement? = null
+                try {
+                    conn = pool.connection
+                    ps =
+                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
+                    ps.setString(1, type)
+                    ps.setString(3, action)
+                    ps.setString(4, data)
+                    ps.setLong(5, time)
+                    ps.executeUpdate()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    pool.close(conn, ps, null)
+                }
+            }
+        }.runTaskAsynchronously(Main.instance!!)
+    }
+
     init {
         pool = ConnectionPoolManager(plugin)
     }

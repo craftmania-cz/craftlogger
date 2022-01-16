@@ -40,3 +40,6 @@ logger:
 
   # Ukládání join and leave logů
   login-logout: false
+
+  # Ukládání startu voteparty
+  voteparty: false

@@ -1,9 +1,6 @@
 package cz.craftmania.logger
 
-import cz.craftmania.logger.listeners.external.EconomyChangesListener
-import cz.craftmania.logger.listeners.external.EconomyLevelUpListener
-import cz.craftmania.logger.listeners.external.LuckPermsListener
-import cz.craftmania.logger.listeners.external.PlotChatListener
+import cz.craftmania.logger.listeners.external.*
 import cz.craftmania.logger.listeners.internal.ChatLoggerListener
 import cz.craftmania.logger.listeners.internal.CommandLogListener
 import cz.craftmania.logger.listeners.internal.JoinAndLeaveLoggerListener
@@ -35,6 +32,8 @@ class Main : JavaPlugin() {
         private set
     var isJoinAndLeaveEnabled = false
         private set
+    var isVotePartyLoggedEnabled = false
+        private set
 
     override fun onEnable() {
 
@@ -52,6 +51,7 @@ class Main : JavaPlugin() {
         isCommandLoggerEnabled = config.getBoolean("logger.commands.enabled", false)
         isChatLoggerEnabled = config.getBoolean("logger.chat-logs", false)
         isJoinAndLeaveEnabled = config.getBoolean("logger.login-logout", false)
+        isVotePartyLoggedEnabled = config.getBoolean("logger.voteparty", false)
         Log.withPrefix("Server je registrovaný jako: $serverId")
 
         // HikariCP
@@ -99,6 +99,11 @@ class Main : JavaPlugin() {
         if (isJoinAndLeaveEnabled) {
             pluginManager.registerEvents(JoinAndLeaveLoggerListener(), this)
             Log.withPrefix("JoinAndLeaveLoggerListener je aktivován.")
+        }
+
+        if (isVotePartyLoggedEnabled && this.server.pluginManager.isPluginEnabled("VoteParty")) {
+            Log.withPrefix("VotePartyListener je aktivován.")
+            pluginManager.registerEvents(VotePartyListener(), this)
         }
     }
 

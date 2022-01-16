@@ -8,4 +8,5 @@ depend:
 softdepend:
   - CraftEconomy
   - PlotSquared
+  - VoteParty
 api-version: '1.15'
