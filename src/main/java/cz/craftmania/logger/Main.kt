@@ -6,6 +6,7 @@ import cz.craftmania.logger.listeners.external.*
 import cz.craftmania.logger.listeners.internal.ChatLoggerListener
 import cz.craftmania.logger.listeners.internal.CommandLogListener
 import cz.craftmania.logger.listeners.internal.JoinAndLeaveLoggerListener
+import cz.craftmania.logger.listeners.internal.PlayerDeathLogListener
 import cz.craftmania.logger.sql.SQLManager
 import cz.craftmania.logger.utils.Log
 import net.luckperms.api.LuckPerms
@@ -36,6 +37,8 @@ class Main : JavaPlugin() {
         private set
     var isVotePartyLoggedEnabled = false
         private set
+    var isDeathLogEnabled = false
+        private set
 
     override fun onEnable() {
 
@@ -54,6 +57,7 @@ class Main : JavaPlugin() {
         isChatLoggerEnabled = config.getBoolean("logger.chat-logs", false)
         isJoinAndLeaveEnabled = config.getBoolean("logger.login-logout", false)
         isVotePartyLoggedEnabled = config.getBoolean("logger.voteparty", false)
+        isDeathLogEnabled = config.getBoolean("logger.deaths", false)
         Log.withPrefix("Server je registrovaný jako: $serverId")
 
         // HikariCP
@@ -106,6 +110,11 @@ class Main : JavaPlugin() {
         if (isVotePartyLoggedEnabled && this.server.pluginManager.isPluginEnabled("VoteParty")) {
             Log.withPrefix("VotePartyListener je aktivován.")
             pluginManager.registerEvents(VotePartyListener(), this)
+        }
+
+        if (isDeathLogEnabled) {
+            pluginManager.registerEvents(PlayerDeathLogListener(), this)
+            Log.withPrefix("PlayerDeathLogListener je aktivován.")
         }
 
         // Commands

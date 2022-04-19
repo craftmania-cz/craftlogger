@@ -227,6 +227,34 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
+    fun createDataLog(player: Player, tableName: String, deathType: String, location: String, killer: String?, inventory: String?, totemDeath: Boolean, time: Long) {
+        val server: String = Main.instance!!.serverId
+        object : BukkitRunnable() {
+            override fun run() {
+                var conn: Connection? = null
+                var ps: PreparedStatement? = null
+                try {
+                    conn = pool.connection
+                    ps =
+                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,deathType,location,killer,inventory,totemDeath,time) VALUES (?,?,?,?,?,?,?,?);")
+                    ps.setString(1, player.name)
+                    ps.setString(2, player.uniqueId.toString())
+                    ps.setString(3, deathType)
+                    ps.setString(4, location)
+                    ps.setString(5, killer)
+                    ps.setString(6, inventory)
+                    ps.setBoolean(7, totemDeath)
+                    ps.setLong(8, time)
+                    ps.executeUpdate()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    pool.close(conn, ps, null)
+                }
+            }
+        }.runTaskAsynchronously(Main.instance!!)
+    }
+
     init {
         pool = ConnectionPoolManager(plugin)
     }

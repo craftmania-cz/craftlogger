@@ -43,3 +43,6 @@ logger:
 
   # Ukládání startu voteparty
   voteparty: false
+
+  # Ukládání do databáze všechny smrti hráčů
+  deaths: false
