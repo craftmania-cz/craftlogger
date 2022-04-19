@@ -53,10 +53,14 @@ repositories {
         url = uri("https://mvn.intellectualsites.com/content/groups/public/")
     }
     maven {
-        url "https://maven.pkg.github.com/craftmania-cz/crafteconomy"
-        credentials {
-            username = GPR_USER
-            password = GPR_TOKEN
+        url "https://gitlab.com/api/v4/groups/craftmania/-/packages/maven"
+        name "GitLab"
+        credentials(HttpHeaderCredentials) {
+            name = 'Private-Token'
+            value = GITLAB_TOKEN
+        }
+        authentication {
+            header(HttpHeaderAuthentication)
         }
     }
 }
@@ -77,7 +81,7 @@ dependencies {
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
 
     // CraftMania
-    compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '1.5.2'
+    compileOnly group: 'cz.craftmania.crafteconomy', name:'crafteconomy', version: '2.0.1'
 }
 
 task compilePlugin(type: Jar) {
