@@ -16,7 +16,7 @@ class JoinAndLeaveLoggerListener : Listener {
             player,
             "gate",
             "JOIN",
-            player.address.toString(),
+            player.address?.address?.hostAddress,
             System.currentTimeMillis()
         )
     }
@@ -28,7 +28,7 @@ class JoinAndLeaveLoggerListener : Listener {
             player,
             "gate",
             "LEAVE",
-            player.address.toString(),
+            player.address?.address?.hostAddress,
             System.currentTimeMillis()
         )
     }
