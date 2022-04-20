@@ -28,8 +28,7 @@ class PlayerDeathLogListener: Listener {
         if (event.isCancelled) return
 
         val player = event.entity as Player
-
-        //TODO: Zkontrolovat zda totem je ok
+        
         if (player.health - event.finalDamage <= 0) {
 
             when (event.cause) {
@@ -41,7 +40,14 @@ class PlayerDeathLogListener: Listener {
                         }
                     } else { // Jinak smrt entitou
                         val damageEventByEntity = event as EntityDamageByEntityEvent
-                        this.createLog(player, "ENTITY_KILL", player.location, damageEventByEntity.damager.type.name)
+                        if (damageEventByEntity.damager is Player) {
+                            val killerPlayer: Player? = (event.damager as Player).killer
+                            if (killerPlayer !== null) {
+                                this.createLog(player, "PLAYER_KILL", player.location, killerPlayer.name)
+                            }
+                        } else {
+                            this.createLog(player, "ENTITY_KILL", player.location, damageEventByEntity.damager.type.name)
+                        }
                     }
                 }
                 else -> {
@@ -106,7 +112,7 @@ class PlayerDeathLogListener: Listener {
         val inventoryObject = JSONObject()
         // Obsah itemů v inventáři
         val playerInventoryContent = JSONObject()
-        inventory.contents.forEachIndexed { index, itemStack ->
+        inventory.contents.forEachIndexed { index, itemStack -> //TODO: Změnit content na něco jinýho?
             run {
                 if (itemStack != null && itemStack.type != Material.AIR) {
                     playerInventoryContent["$index"] = prepareItemStackToJson(itemStack)
