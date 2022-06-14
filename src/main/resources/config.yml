@@ -46,3 +46,6 @@ logger:
 
   # Ukládání do databáze všechny smrti hráčů
   deaths: false
+
+  # Ukládání lands, nations a wars logů
+  lands: false

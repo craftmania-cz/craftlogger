@@ -1,6 +1,7 @@
 package cz.craftmania.logger.listeners.internal
 
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -14,7 +15,7 @@ class JoinAndLeaveLoggerListener : Listener {
         val player = event.player
         Main.instance!!.sQL!!.createDataLog(
             player,
-            "gate",
+            LogType.GATE,
             "JOIN",
             player.address?.address?.hostAddress,
             System.currentTimeMillis()
@@ -26,7 +27,7 @@ class JoinAndLeaveLoggerListener : Listener {
         val player = event.player
         Main.instance!!.sQL!!.createDataLog(
             player,
-            "gate",
+            LogType.GATE,
             "LEAVE",
             player.address?.address?.hostAddress,
             System.currentTimeMillis()
@@ -36,6 +37,6 @@ class JoinAndLeaveLoggerListener : Listener {
     @EventHandler
     fun onKick(event: PlayerKickEvent) {
         val player = event.player
-        Main.instance!!.sQL!!.createDataLog(player, "gate", "KICK", null, System.currentTimeMillis())
+        Main.instance!!.sQL!!.createDataLog(player, LogType.GATE, "KICK", null, System.currentTimeMillis())
     }
 }

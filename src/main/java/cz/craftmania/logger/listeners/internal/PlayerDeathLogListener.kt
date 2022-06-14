@@ -1,10 +1,10 @@
 package cz.craftmania.logger.listeners.internal
 
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
+import cz.craftmania.logger.utils.LogUtils
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -88,21 +88,10 @@ class PlayerDeathLogListener: Listener {
 
         val playerInventoryJson: String = this.preparePlayerInventoryIsJSON(player.inventory)
         val hasTotem: Boolean = player.inventory.containsAtLeast(ItemStack(Material.TOTEM_OF_UNDYING), 1)
-        val locationAsJson: String = prepareJsonLocation(location)
+        val locationAsJson: String = LogUtils.prepareJsonLocation(location)
 
         // Save log
-        Main.instance!!.sQL!!.createDataLog(player, "deaths", deathType, locationAsJson, entityKillerName, playerInventoryJson, hasTotem, System.currentTimeMillis())
-    }
-
-    private fun prepareJsonLocation(location: Location): String {
-        val locationObject = JSONObject()
-        locationObject["world"] = location.world?.name
-        locationObject["x"] = location.x
-        locationObject["y"] = location.y
-        locationObject["z"] = location.z
-        locationObject["yaw"] = location.yaw
-        locationObject["pitch"] = location.pitch
-        return locationObject.toString()
+        Main.instance!!.sQL!!.createDataLog(player, LogType.DEATHS, deathType, locationAsJson, entityKillerName, playerInventoryJson, hasTotem, System.currentTimeMillis())
     }
 
     /**

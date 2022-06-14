@@ -10,6 +10,10 @@ object Log {
         Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN.toString() + "[CraftLogger] " + ChatColor.WHITE + s)
     }
 
+    fun error(s: String) {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.RED.toString() + "[CraftLogger - ERROR] " + ChatColor.WHITE + s)
+    }
+
     fun normalMessage(s: String?) {
         Bukkit.getConsoleSender().sendMessage(s!!)
     }

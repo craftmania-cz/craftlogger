@@ -1,6 +1,7 @@
 package cz.craftmania.logger.listeners.internal
 
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
 import cz.craftmania.logger.utils.Log
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -22,7 +23,7 @@ class CommandLogListener : Listener {
         }
         Main.instance!!.sQL!!.createDataLog(
             event.player,
-            "command",
+            LogType.COMMAND,
             "COMMAND",
             event.message,
             System.currentTimeMillis()

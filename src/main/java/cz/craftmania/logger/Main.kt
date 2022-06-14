@@ -39,6 +39,8 @@ class Main : JavaPlugin() {
         private set
     var isDeathLogEnabled = false
         private set
+    var isLandsLogEnabled = false
+        private set
 
     override fun onEnable() {
 
@@ -58,6 +60,7 @@ class Main : JavaPlugin() {
         isJoinAndLeaveEnabled = config.getBoolean("logger.login-logout", false)
         isVotePartyLoggedEnabled = config.getBoolean("logger.voteparty", false)
         isDeathLogEnabled = config.getBoolean("logger.deaths", false)
+        isLandsLogEnabled = config.getBoolean("logger.lands", false)
         Log.withPrefix("Server je registrovaný jako: $serverId")
 
         // HikariCP
@@ -115,6 +118,11 @@ class Main : JavaPlugin() {
         if (isDeathLogEnabled) {
             pluginManager.registerEvents(PlayerDeathLogListener(), this)
             Log.withPrefix("PlayerDeathLogListener je aktivován.")
+        }
+
+        if (isLandsLogEnabled) {
+            pluginManager.registerEvents(LandsListener(), this)
+            Log.withPrefix("LandsListener je aktivován.")
         }
 
         // Commands

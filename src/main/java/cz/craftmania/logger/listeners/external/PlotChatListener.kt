@@ -4,6 +4,7 @@ import com.plotsquared.bukkit.player.BukkitPlayer
 import com.plotsquared.bukkit.util.BukkitUtil
 import com.plotsquared.core.location.Location
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
 import cz.craftmania.logger.utils.Log
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -28,7 +29,7 @@ class PlotChatListener: Listener {
 
         Main.instance!!.sQL!!.createDataLog(
             event.player,
-            "chat",
+            LogType.CHAT,
             "PLOT_MESSAGE",
             event.message,
             System.currentTimeMillis()

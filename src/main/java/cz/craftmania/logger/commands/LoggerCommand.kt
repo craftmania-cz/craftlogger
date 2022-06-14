@@ -5,8 +5,10 @@ import co.aikar.commands.BaseCommand
 import co.aikar.commands.CommandHelp
 import co.aikar.commands.annotation.*
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
 import cz.craftmania.logger.utils.Log
 import org.bukkit.command.CommandSender
+import java.util.UUID
 
 @CommandAlias("logger")
 @Description("Hlavní příkaz na ovládání CraftLoggeru.")
@@ -31,7 +33,7 @@ class LoggerCommand : BaseCommand() {
         when (typ) {
             "pinata" -> {
                 Main.instance!!.sQL!!.createDataLog(
-                    "PINATA", "vote_events", "START", null, System.currentTimeMillis())
+                    LogType.VOTE_EVENTS, UUID.randomUUID().toString(), "PINATA", null, System.currentTimeMillis())
                 Log.withPrefix("[A:PINATA]: Action called.")
                 sender.sendMessage("§eStart pinaty byl uložen do SQL.")
             } else -> {

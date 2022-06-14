@@ -2,6 +2,7 @@ package cz.craftmania.logger.sql
 
 import com.zaxxer.hikari.HikariDataSource
 import cz.craftmania.logger.Main
+import cz.craftmania.logger.objects.LogType
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
@@ -153,7 +154,7 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
-    fun createDataLog(p: Player, tableName: String, action: String?, data: String?, time: Long) {
+    fun createDataLog(p: Player, logType: LogType, action: String?, data: String?, time: Long) {
         val server: String = Main.instance!!.serverId
         object : BukkitRunnable() {
             override fun run() {
@@ -162,7 +163,7 @@ class SQLManager(private val plugin: Main) {
                 try {
                     conn = pool.connection
                     ps =
-                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
+                        conn.prepareStatement("INSERT INTO logs." + logType.name.lowercase() + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
                     ps.setString(1, p.name)
                     ps.setString(2, p.uniqueId.toString())
                     ps.setString(3, action)
@@ -178,7 +179,7 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
-    fun createDataLog(p: Player, tableName: String, action: String?, data: Long, time: Long) {
+    fun createDataLog(p: Player, logType: LogType, action: String?, data: Long, time: Long) {
         val server: String = Main.instance!!.serverId
         object : BukkitRunnable() {
             override fun run() {
@@ -187,7 +188,7 @@ class SQLManager(private val plugin: Main) {
                 try {
                     conn = pool.connection
                     ps =
-                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
+                        conn.prepareStatement("INSERT INTO logs." + logType.name.lowercase() + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
                     ps.setString(1, p.name)
                     ps.setString(2, p.uniqueId.toString())
                     ps.setString(3, action)
@@ -203,7 +204,7 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
-    fun createDataLog(type: String, tableName: String, action: String?, data: String?, time: Long) {
+    fun createDataLog(type: String, logType: LogType, action: String?, data: String?, time: Long) {
         val server: String = Main.instance!!.serverId
         object : BukkitRunnable() {
             override fun run() {
@@ -212,7 +213,7 @@ class SQLManager(private val plugin: Main) {
                 try {
                     conn = pool.connection
                     ps =
-                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
+                        conn.prepareStatement("INSERT INTO logs." + logType.name.lowercase() + "_" + server + "_log (nick,uuid,action,data,time) VALUES (?,?,?,?,?);")
                     ps.setString(1, type)
                     ps.setString(3, action)
                     ps.setString(4, data)
@@ -227,7 +228,7 @@ class SQLManager(private val plugin: Main) {
         }.runTaskAsynchronously(Main.instance!!)
     }
 
-    fun createDataLog(player: Player, tableName: String, deathType: String, location: String, killer: String?, inventory: String?, totemDeath: Boolean, time: Long) {
+    fun createDataLog(player: Player, logType: LogType, deathType: String, location: String, killer: String?, inventory: String?, totemDeath: Boolean, time: Long) {
         val server: String = Main.instance!!.serverId
         object : BukkitRunnable() {
             override fun run() {
@@ -236,7 +237,7 @@ class SQLManager(private val plugin: Main) {
                 try {
                     conn = pool.connection
                     ps =
-                        conn.prepareStatement("INSERT INTO logs." + tableName + "_" + server + "_log (nick,uuid,deathType,location,killer,inventory,totemDeath,time) VALUES (?,?,?,?,?,?,?,?);")
+                        conn.prepareStatement("INSERT INTO logs." + logType.name.lowercase() + "_" + server + "_log (nick,uuid,deathType,location,killer,inventory,totemDeath,time) VALUES (?,?,?,?,?,?,?,?);")
                     ps.setString(1, player.name)
                     ps.setString(2, player.uniqueId.toString())
                     ps.setString(3, deathType)
@@ -245,6 +246,30 @@ class SQLManager(private val plugin: Main) {
                     ps.setString(6, inventory)
                     ps.setBoolean(7, totemDeath)
                     ps.setLong(8, time)
+                    ps.executeUpdate()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                } finally {
+                    pool.close(conn, ps, null)
+                }
+            }
+        }.runTaskAsynchronously(Main.instance!!)
+    }
+
+    fun createDataLog(logType: LogType, identifier: String?, action: String?, data: String?, time: Long) {
+        val server: String = Main.instance!!.serverId
+        object : BukkitRunnable() {
+            override fun run() {
+                var conn: Connection? = null
+                var ps: PreparedStatement? = null
+                try {
+                    conn = pool.connection
+                    ps =
+                        conn.prepareStatement("INSERT INTO logs." + logType.name.lowercase() + "_" + server + "_log (identifier,action,data,time) VALUES (?,?,?,?);")
+                    ps.setString(1, identifier);
+                    ps.setString(2, action)
+                    ps.setString(3, data)
+                    ps.setLong(4, time)
                     ps.executeUpdate()
                 } catch (e: Exception) {
                     e.printStackTrace()

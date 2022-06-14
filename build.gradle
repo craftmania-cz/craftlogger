@@ -48,6 +48,7 @@ repositories {
     flatDir { dirs 'libs' }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "https://repo.aikar.co/content/groups/aikar/" }
+    maven { url 'https://jitpack.io' }
     maven {
         name = "IntellectualSites"
         url = uri("https://mvn.intellectualsites.com/content/groups/public/")
@@ -76,6 +77,7 @@ dependencies {
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     compileOnly name: 'PlotSquared-Bukkit-6.3.0-Premium'
     compileOnly name: 'VoteParty-2.31'
+    compileOnly "com.github.angeschossen:LandsAPI:6.5.1"
 
     // Commands
     compile 'co.aikar:acf-paper:0.5.0-SNAPSHOT'
