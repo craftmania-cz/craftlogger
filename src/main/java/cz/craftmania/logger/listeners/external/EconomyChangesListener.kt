@@ -50,7 +50,7 @@ class EconomyChangesListener : Listener {
             sender,
             reciever,
             "PAY_COMMAND",
-            event.amount,
+            event.amount.toLong(),
             System.currentTimeMillis()
         )
         Log.withPrefix("[A:PAY_COMMAND]: " + sender.name + "(" + sender.uniqueId.toString() + ") =>> " + reciever.name + "(" + reciever.uniqueId.toString() + ") - " + event.amount)
