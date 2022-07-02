@@ -1,5 +1,5 @@
 name: CraftLogger
-version: 1.3.0
+version: 1.3.1
 description: Log everything
 author: MrWakeCZ
 main: cz.craftmania.logger.Main
@@ -10,4 +10,4 @@ softdepend:
   - PlotSquared
   - VoteParty
   - Lands
-api-version: '1.15'
+api-version: '1.17'
