@@ -106,6 +106,8 @@ class LandsListener : Listener {
         jsonObject["reason"] = event.reason.name
         jsonObject["name"] = event.land.name
         jsonObject["owner"] = event.land.ownerUID.toString()
+        jsonObject["balance"] = event.land.balance
+        jsonObject["chunks_amount"] = event.land.chunksAmount
         try {
             Main.instance!!.sQL!!.createDataLog(
                 LogType.LANDS,
@@ -163,6 +165,8 @@ class LandsListener : Listener {
         val jsonObject = JSONObject()
         jsonObject["owner"] = event.nation.ownerUID
         jsonObject["reason"] = event.reason.name
+        jsonObject["balance"] = event.nation.balance
+        jsonObject["lands_amount"] = event.nation.lands.size
         try {
             Main.instance!!.sQL!!.createDataLog(
                 LogType.NATIONS,
