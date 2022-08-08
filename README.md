@@ -1,3 +1,4 @@
-# CraftLogger
+# CraftLogger (alias CraftMania Telemetry)
 
-Plugin, co ukládá vše do databáze pro CraftBox + statistiky a leaderbordy.
+Tento plugin ukládá telemetrický data hráčů a akcí prováděných na serveru. Data dále slouží k dalším úpravám
+a logování v dalších pluginech nebo aplikací na serveru.
